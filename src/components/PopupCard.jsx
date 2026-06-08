@@ -1,3 +1,4 @@
+import { Analytics } from '../utils/analytics'
 export default function PopupCard({ node, onClose }) {
   return (
     <div
@@ -38,6 +39,7 @@ export default function PopupCard({ node, onClose }) {
         </p>
         <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
           <a
+          onClick={() => Analytics.wikipediaOpened(node.title)}
             href={node.url}
             target="_blank"
             rel="noopener noreferrer"

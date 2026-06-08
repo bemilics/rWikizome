@@ -1,3 +1,4 @@
+import { Analytics } from '../utils/analytics'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useGraph } from '../hooks/useGraph'
@@ -26,12 +27,13 @@ export default function Node({ node, style }) {
     lastPointer.current = { x: clientX, y: clientY }
 
     holdTimer.current = setTimeout(async () => {
-      if (!isDragging.current) {
-        didHold.current = true
-        await loadSummary(node.id)
-        setShowPopup(true)
-      }
-    }, HOLD_DURATION)
+  if (!isDragging.current) {
+    didHold.current = true
+    Analytics.nodeHold(node.title)
+    await loadSummary(node.id)
+    setShowPopup(true)
+  }
+}, HOLD_DURATION)
   }
 
   const onPressMove = (clientX, clientY) => {
@@ -55,8 +57,9 @@ export default function Node({ node, style }) {
     clearTimeout(holdTimer.current)
 
     if (!isDragging.current && !didHold.current) {
-      expandNode(node.id)
-    }
+  Analytics.nodeExpanded(node.title)
+  expandNode(node.id)
+}
 
     // reset completo
     isPressed.current = false

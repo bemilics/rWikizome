@@ -1,3 +1,4 @@
+import { Analytics } from '../utils/analytics'
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { useGraph } from "../hooks/useGraph"
@@ -44,6 +45,7 @@ export default function FloatingButtons() {
           style={btnStyle}
           onClick={() => init()}
           title="Reset"
+          onClick={() => { Analytics.graphReset(); init() }}
         >
           ↺
         </button>
@@ -51,6 +53,7 @@ export default function FloatingButtons() {
           style={btnStyle}
           onClick={() => setShowInfo(true)}
           title="Info"
+          InfoPopup onClose={() => { Analytics.infoPopupClosed(); setShowInfo(false) }}
         >
           i
         </button>
