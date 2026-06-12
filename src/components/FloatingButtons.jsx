@@ -1,14 +1,15 @@
-import { Analytics } from '../utils/analytics'
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { useGraph } from "../hooks/useGraph"
+import { Analytics } from "../utils/analytics"
 import InfoPopup from "./InfoPopup"
+import SearchBar from "./SearchBar"
 
 export default function FloatingButtons() {
   const { init } = useGraph()
   const [showInfo, setShowInfo] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
-  // mostrar en la primera visita
   useEffect(() => {
     const visited = localStorage.getItem("rwikizome_visited")
     if (!visited) {
@@ -34,33 +35,33 @@ export default function FloatingButtons() {
   return (
     <>
       <div style={{
-        position: "fixed",
-        top: "16px",
-        right: "16px",
-        display: "flex",
-        gap: "8px",
-        zIndex: 150,
+        position: "fixed", top: "16px", right: "16px",
+        display: "flex", gap: "8px", zIndex: 150,
       }}>
         <button
           style={btnStyle}
-          onClick={() => init()}
-          title="Reset"
           onClick={() => { Analytics.graphReset(); init() }}
-        >
-          ↺
-        </button>
+          title="Reset"
+        >↺</button>
+        <button
+          style={btnStyle}
+          onClick={() => setShowSearch(true)}
+          title="Search"
+        >⌕</button>
         <button
           style={btnStyle}
           onClick={() => setShowInfo(true)}
           title="Info"
-          InfoPopup onClose={() => { Analytics.infoPopupClosed(); setShowInfo(false) }}
-        >
-          i
-        </button>
+        >i</button>
       </div>
 
+      {showSearch && createPortal(
+        <SearchBar onClose={() => setShowSearch(false)} />,
+        document.body
+      )}
+
       {showInfo && createPortal(
-        <InfoPopup onClose={() => setShowInfo(false)} />,
+        <InfoPopup onClose={() => { Analytics.infoPopupClosed(); setShowInfo(false) }} />,
         document.body
       )}
     </>

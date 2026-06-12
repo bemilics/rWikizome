@@ -25,10 +25,23 @@ export default function Node({ node, style, zoom = 1 }) {
   const startProgressAnimation = () => {
     pressStart.current = Date.now()
     setHoldProgress(0)
+
+    // vibración inicial al empezar el hold
+    if (navigator.vibrate) navigator.vibrate(10)
+
+    const DELAY = 150 // ms antes de que empiece a moverse el anillo
     const tick = () => {
-      const elapsed = Date.now() - pressStart.current
+      const elapsed = Math.max(0, Date.now() - pressStart.current - DELAY)
       const progress = Math.min(elapsed / HOLD_DURATION, 1)
       setHoldProgress(progress)
+
+      // haptic feedback progresivo
+      if (navigator.vibrate) {
+        if (progress > 0.33 && progress < 0.36) navigator.vibrate(15)
+        if (progress > 0.66 && progress < 0.69) navigator.vibrate(20)
+        if (progress >= 1) navigator.vibrate([30, 20, 60]) // patrón final
+      }
+
       if (progress < 1) {
         progressTimer.current = requestAnimationFrame(tick)
       }
@@ -68,7 +81,7 @@ export default function Node({ node, style, zoom = 1 }) {
       isDragging.current = true
       clearTimeout(holdTimer.current)
       stopProgressAnimation()
-      moveNode(node.id, dx / zoom, dy / zoom)
+      moveNode(node.id, dx / zoom, dy / zoom)  // zoom compensa la escala del contenedor
     }
     lastPointer.current = { x: clientX, y: clientY }
   }
@@ -129,7 +142,7 @@ export default function Node({ node, style, zoom = 1 }) {
           lineHeight: "1.3",
           opacity: isExpanding ? 0.6 : 1,
           transition: "opacity 0.2s, background 0.2s",
-          position: "relative",
+          position: "absolute",
         }}
       >
         {isExpanding ? "..." : node.title}
