@@ -137,6 +137,80 @@ export const useGraph = create((set, get) => ({
   },
 
   // ——— mover un nodo (drag) ———
+  // BFS: encuentra el camino desde la raíz hasta un nodo
+  getPath: (targetId) => {
+    const { nodes, edges } = get()
+    if (nodes.length === 0) return []
+
+    const root = nodes[0]
+    if (root.id === targetId) return [root]
+
+    // construir mapa de adyacencia (edges son dirigidos from→to)
+    const adj = {}
+    for (const edge of edges) {
+      if (!adj[edge.from]) adj[edge.from] = []
+      adj[edge.from].push(edge.to)
+    }
+
+    // BFS
+    const queue = [[root.id]]
+    const visited = new Set([root.id])
+
+    while (queue.length > 0) {
+      const path = queue.shift()
+      const current = path[path.length - 1]
+
+      for (const neighbor of (adj[current] ?? [])) {
+        if (visited.has(neighbor)) continue
+        const newPath = [...path, neighbor]
+        if (neighbor === targetId) {
+          // convertir ids a nodos
+          return newPath.map((id) => nodes.find((n) => n.id === id)).filter(Boolean)
+        }
+        visited.add(neighbor)
+        queue.push(newPath)
+      }
+    }
+
+    return [] // no debería pasar
+  },
+
+  // stats de sesión para sharecard
+  getSessionStats: () => {
+    const { nodes, edges, getPath } = get()
+    if (nodes.length === 0) return null
+
+    const root = nodes[0]
+
+    // leaf nodes = nodos sin hijos expandidos
+    const parentIds = new Set(edges.map((e) => e.from))
+    const leaves = nodes.filter((n) => !parentIds.has(n.id))
+
+    // encontrar el leaf con mayor profundidad (momento WTF)
+    let wtfPath = []
+    for (const leaf of leaves) {
+      const path = getPath(leaf.id)
+      if (path.length > wtfPath.length) wtfPath = path
+    }
+
+    // rama más larga
+    const maxDepth = wtfPath.length - 1
+
+    // cantidad de ramas (hijos directos de la raíz)
+    const branches = edges.filter((e) => e.from === root.id).length
+
+    return {
+      root,
+      totalNodes: nodes.length,
+      branches,
+      maxDepth,
+      wtfStart: wtfPath[0] ?? null,
+      wtfEnd: wtfPath[wtfPath.length - 1] ?? null,
+      wtfSteps: wtfPath.length - 1,
+      wtfPath,
+    }
+  },
+
   moveNode: (nodeId, dx, dy) => {
     set((state) => ({
       nodes: state.nodes.map((n) =>

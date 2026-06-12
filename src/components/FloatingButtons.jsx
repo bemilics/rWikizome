@@ -4,11 +4,13 @@ import { useGraph } from "../hooks/useGraph"
 import { Analytics } from "../utils/analytics"
 import InfoPopup from "./InfoPopup"
 import SearchBar from "./SearchBar"
+import ShareCard from "./ShareCard"
 
 export default function FloatingButtons() {
-  const { init } = useGraph()
+  const { init, getSessionStats } = useGraph()
   const [showInfo, setShowInfo] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
+  const [showSessionShare, setShowSessionShare] = useState(false)
 
   useEffect(() => {
     const visited = localStorage.getItem("rwikizome_visited")
@@ -38,22 +40,19 @@ export default function FloatingButtons() {
         position: "fixed", top: "16px", right: "16px",
         display: "flex", gap: "8px", zIndex: 150,
       }}>
-        <button
-          style={btnStyle}
-          onClick={() => { Analytics.graphReset(); init() }}
-          title="Reset"
-        >↺</button>
-        <button
-          style={btnStyle}
-          onClick={() => setShowSearch(true)}
-          title="Search"
-        >⌕</button>
-        <button
-          style={btnStyle}
-          onClick={() => setShowInfo(true)}
-          title="Info"
-        >i</button>
+        <button style={btnStyle} onClick={() => { Analytics.graphReset(); init() }} title="Reset">↺</button>
+        <button style={btnStyle} onClick={() => setShowSessionShare(true)} title="Share session">↗</button>
+        <button style={btnStyle} onClick={() => setShowSearch(true)} title="Search">⌕</button>
+        <button style={btnStyle} onClick={() => setShowInfo(true)} title="Info">i</button>
       </div>
+
+      {showSessionShare && (
+        <ShareCard
+          mode="session"
+          stats={getSessionStats()}
+          onClose={() => setShowSessionShare(false)}
+        />
+      )}
 
       {showSearch && createPortal(
         <SearchBar onClose={() => setShowSearch(false)} />,
