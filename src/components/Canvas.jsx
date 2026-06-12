@@ -16,13 +16,14 @@ export default function Canvas() {
   const lastPinchDist = useRef(null)
   const canvasRef = useRef(null)
 
-  const resetView = () => {
+  const resetViewRef = useRef(null)
+  resetViewRef.current = () => {
     setPan({ x: 0, y: 0 })
     setZoom(1)
   }
 
   useEffect(() => {
-    setResetViewCallback(resetView)
+    setResetViewCallback(() => resetViewRef.current())
     const restored = loadFromStorage()
     if (!restored) init()
   }, [])

@@ -11,22 +11,27 @@ export const useGraph = create((set, get) => ({
 
   // ——— inicializar con nodo raíz random ———
   init: async () => {
+    const { onResetView } = get()
+    if (onResetView) onResetView()
     set({ loading: true })
     const root = await getRandomArticle()
     root.position = { x: 0, y: 0 }
     root.expanded = false
     root.summary = root.summary ?? null
     set({ nodes: [root], edges: [], loading: false })
+    get().saveToStorage()
   },
 
   // ——— inicializar con un título específico (buscador) ———
   initWithTitle: async (title) => {
+    const { onResetView } = get()
+    if (onResetView) onResetView()
     set({ loading: true })
-    const { getArticleSummary } = await import('../api/wikipedia')
     const root = await getArticleSummary(title)
     root.position = { x: 0, y: 0 }
     root.expanded = false
     set({ nodes: [root], edges: [], loading: false })
+    get().saveToStorage()
   },
 
   // ——— expandir un nodo: spawnear 3 hijos ———
