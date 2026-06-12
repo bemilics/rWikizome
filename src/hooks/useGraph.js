@@ -3,6 +3,8 @@ import { getRandomArticle, getChildNodes, getArticleSummary } from '../api/wikip
 
 export const useGraph = create((set, get) => ({
   nodes: [],
+  onResetView: null,
+  setResetViewCallback: (fn) => set({ onResetView: fn }),
   edges: [],
   loading: false,
   expandingId: null, // qué nodo está cargando hijos ahora mismo

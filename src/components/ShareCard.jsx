@@ -29,7 +29,7 @@ function PathCard({ path, cardRef }) {
         <p style={{ ...wp, fontSize: "11px", color: "#54595d", marginTop: "8px" }}>{path.length - 1} {path.length - 1 === 1 ? "step" : "steps"} apart</p>
       </div>
       <div style={{ borderTop: border, padding: "5px 12px", background: "#f8f9fa" }}>
-        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", textAlign: "center", letterSpacing: "0.05em" }}>rhizopedia.app</p>
+        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", textAlign: "center", letterSpacing: "0.05em" }}>rhizopedia.vercel.app</p>
       </div>
     </div>
   )
@@ -64,7 +64,7 @@ function SessionCard({ stats, cardRef }) {
         </div>
       </div>
       <div style={{ borderTop: border, padding: "5px 12px", background: "#f8f9fa" }}>
-        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", textAlign: "center", letterSpacing: "0.05em" }}>rhizopedia.app</p>
+        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", textAlign: "center", letterSpacing: "0.05em" }}>rhizopedia.vercel.app</p>
       </div>
     </div>
   )

@@ -17,8 +17,11 @@ export default function PopupCard({ node, onClose }) {
           position: "fixed", top: 0, left: 0,
           width: "100vw", height: "100vh",
           background: "rgba(0,0,0,0.35)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          zIndex: 100, padding: "24px",
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          zIndex: 100,
+          padding: "32px 16px 16px",
         }}
         onClick={onClose}
       >
@@ -29,8 +32,9 @@ export default function PopupCard({ node, onClose }) {
             border: "1px solid #a2a9b1",
             width: "100%",
             maxWidth: "420px",
-            maxHeight: "80vh",
-            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: "calc(100vh - 64px)",
           }}
         >
           <div style={{
@@ -40,57 +44,47 @@ export default function PopupCard({ node, onClose }) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexShrink: 0,
           }}>
             <span style={{ ...wp, fontSize: "13px", fontWeight: "bold", color: "#202122" }}>{node.title}</span>
-            <span style={{ ...wp, fontSize: "11px", color: "#54595d" }}>Wikipedia article summary</span>
-          </div>
-
-          <div style={{ padding: "12px 14px" }}>
-            <p style={{ ...wp, fontSize: "13px", lineHeight: "1.7", color: "#202122" }}>
-              {node.summary ?? "Loading..."}
-            </p>
+            <button
+              onClick={onClose}
+              style={{ ...wp, fontSize: "11px", background: "none", border: "none", color: "#54595d", cursor: "pointer", padding: "0 4px" }}
+            >x close</button>
           </div>
 
           <div style={{
-            borderTop: "1px solid #a2a9b1",
+            borderBottom: "1px solid #a2a9b1",
             padding: "6px 12px",
-            background: "#f8f9fa",
             display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
             gap: "12px",
+            alignItems: "center",
+            background: "#fff",
+            flexShrink: 0,
           }}>
             {path.length > 1 && (
               <span
                 onClick={() => setShowShare(true)}
                 style={{ ...wp, fontSize: "11px", color: "#0645ad", textDecoration: "underline", cursor: "pointer" }}
-              >
-                Share path
-              </span>
+              >Share path</span>
             )}
-            <a
+            
               href={node.url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => Analytics.wikipediaOpened(node.title)}
               style={{ ...wp, fontSize: "11px", color: "#0645ad", textDecoration: "underline" }}
-            >
-              Open in Wikipedia
-            </a>
-            <button
-              onClick={onClose}
-              style={{
-                ...wp,
-                fontSize: "11px",
-                background: "#f8f9fa",
-                border: "1px solid #a2a9b1",
-                padding: "2px 10px",
-                color: "#202122",
-                cursor: "pointer",
-              }}
-            >
-              Close
-            </button>
+            >Open in Wikipedia</a>
+          </div>
+
+          <div style={{
+            padding: "12px 14px",
+            overflowY: "auto",
+            flexGrow: 1,
+          }}>
+            <p style={{ ...wp, fontSize: "13px", lineHeight: "1.7", color: "#202122" }}>
+              {node.summary ?? "Loading..."}
+            </p>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { Analytics } from "../utils/analytics"
 const wp = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 export default function SearchBar({ onClose }) {
-  const { initWithTitle } = useGraph()
+  const { initWithTitle, init } = useGraph()
   const [query, setQuery] = useState("")
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
@@ -23,8 +23,13 @@ export default function SearchBar({ onClose }) {
   }
 
   const pick = (title) => {
-    Analytics.graphReset()
+    Analytics.graphSearch(title)
     initWithTitle(title)
+    onClose()
+  }
+
+  const handleCancel = () => {
+    init()
     onClose()
   }
 
@@ -60,7 +65,7 @@ export default function SearchBar({ onClose }) {
           )}
         </div>
         <div style={{ borderTop: "1px solid #a2a9b1", padding: "6px 12px", background: "#f8f9fa", display: "flex", justifyContent: "flex-end" }}>
-          <button onClick={onClose} style={{ ...wp, fontSize: "11px", background: "#f8f9fa", border: "1px solid #a2a9b1", padding: "2px 10px", color: "#202122", cursor: "pointer" }}>Cancel</button>
+          <button onClick={handleCancel} style={{ ...wp, fontSize: "11px", background: "#f8f9fa", border: "1px solid #a2a9b1", padding: "2px 10px", color: "#202122", cursor: "pointer" }}>Random article</button>
         </div>
       </div>
     </div>

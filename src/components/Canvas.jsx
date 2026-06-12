@@ -8,7 +8,7 @@ const MAX_ZOOM = 1.0
 const ZOOM_STEP = 0.15
 
 export default function Canvas() {
-  const { nodes, edges, init } = useGraph()
+  const { nodes, edges, init, setResetViewCallback } = useGraph()
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const isPanning = useRef(false)
@@ -16,7 +16,15 @@ export default function Canvas() {
   const lastPinchDist = useRef(null)
   const canvasRef = useRef(null)
 
-  useEffect(() => { init() }, [])
+  const resetView = () => {
+    setPan({ x: 0, y: 0 })
+    setZoom(1)
+  }
+
+  useEffect(() => {
+    setResetViewCallback(resetView)
+    init()
+  }, [])
 
   const clampZoom = (z) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z))
 

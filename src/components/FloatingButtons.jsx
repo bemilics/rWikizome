@@ -16,9 +16,14 @@ export default function FloatingButtons() {
     const visited = localStorage.getItem("rhizopedia_visited")
     if (!visited) {
       setShowInfo(true)
-      localStorage.setItem("rhizopedia_visited", "1")
     }
   }, [])
+
+  const handleInfoClose = () => {
+    localStorage.setItem("rhizopedia_visited", "1")
+    setShowInfo(false)
+    setShowSearch(true)
+  }
 
   const btnStyle = {
     padding: "2px 10px",
@@ -44,7 +49,7 @@ export default function FloatingButtons() {
         zIndex: 150,
         alignItems: "flex-end",
       }}>
-        <button style={btnStyle} onClick={() => { Analytics.graphReset(); init() }}>Reset</button>
+        <button style={btnStyle} onClick={() => { Analytics.graphRandom(); init() }}>Random</button>
         <button style={btnStyle} onClick={() => setShowSessionShare(true)}>Share session</button>
         <button style={btnStyle} onClick={() => setShowSearch(true)}>Search</button>
         <button style={btnStyle} onClick={() => setShowInfo(true)}>Help</button>
@@ -74,7 +79,7 @@ export default function FloatingButtons() {
       )}
 
       {showInfo && createPortal(
-        <InfoPopup onClose={() => { Analytics.infoPopupClosed(); setShowInfo(false) }} />,
+        <InfoPopup onClose={handleInfoClose} />,
         document.body
       )}
     </>
