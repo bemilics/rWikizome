@@ -131,8 +131,16 @@ export default function Node({ node, style, zoom = 1 }) {
         style={{
           ...style,
           padding: "8px 12px",
-          background: node.expanded ? "#333" : "#222",
-          border: node.expanded ? "1px solid #888" : "1px solid #444",
+          background: node.expanded
+            ? "#1a2e1a"
+            : node.visited
+            ? "#1a2a3a"
+            : "#222",
+          border: node.expanded
+            ? "1px solid #4a8a4a"
+            : node.visited
+            ? "1px solid #4a8ab5"
+            : "1px solid #444",
           borderRadius: "8px",
           cursor: isExpanding ? "wait" : "pointer",
           userSelect: "none",
@@ -141,7 +149,7 @@ export default function Node({ node, style, zoom = 1 }) {
           fontSize: "12px",
           lineHeight: "1.3",
           opacity: isExpanding ? 0.6 : 1,
-          transition: "opacity 0.2s, background 0.2s",
+          transition: "opacity 0.2s, background 0.2s, border 0.2s",
           position: "absolute",
         }}
       >

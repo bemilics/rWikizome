@@ -124,12 +124,14 @@ export const useGraph = create((set, get) => ({
   loadSummary: async (nodeId) => {
     const { nodes } = get()
     const node = nodes.find((n) => n.id === nodeId)
-    if (!node || node.summary) return
+    if (!node) return
 
-    const data = await getArticleSummary(nodeId)
+    const data = node.summary ? null : await getArticleSummary(nodeId)
     set({
       nodes: nodes.map((n) =>
-        n.id === nodeId ? { ...n, summary: data.summary, url: data.url } : n
+        n.id === nodeId
+          ? { ...n, visited: true, summary: data ? data.summary : n.summary, url: data ? data.url : n.url }
+          : n
       ),
     })
   },
