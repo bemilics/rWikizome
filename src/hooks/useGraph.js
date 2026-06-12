@@ -136,6 +136,7 @@ export const useGraph = create((set, get) => ({
           : n
       ),
     })
+    get().saveToStorage()
   },
 
   // ——— mover un nodo (drag) ———
@@ -213,6 +214,24 @@ export const useGraph = create((set, get) => ({
     }
   },
 
+
+  saveToStorage: () => {
+    const { nodes, edges } = get()
+    try {
+      localStorage.setItem('rhizopedia_graph', JSON.stringify({ nodes, edges }))
+    } catch {}
+  },
+
+  loadFromStorage: () => {
+    try {
+      const saved = localStorage.getItem('rhizopedia_graph')
+      if (!saved) return false
+      const { nodes, edges } = JSON.parse(saved)
+      if (!nodes?.length) return false
+      set({ nodes, edges })
+      return true
+    } catch { return false }
+  },
   moveNode: (nodeId, dx, dy) => {
     set((state) => ({
       nodes: state.nodes.map((n) =>
@@ -221,5 +240,6 @@ export const useGraph = create((set, get) => ({
           : n
       ),
     }))
+    get().saveToStorage()
   },
 }))
