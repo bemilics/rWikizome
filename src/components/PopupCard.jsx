@@ -1,4 +1,5 @@
-import { Analytics } from '../utils/analytics'
+import { Analytics } from "../utils/analytics"
+
 export default function PopupCard({ node, onClose }) {
   return (
     <div
@@ -38,38 +39,41 @@ export default function PopupCard({ node, onClose }) {
           {node.summary ?? "Loading..."}
         </p>
         <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-          <a
-          onClick={() => Analytics.wikipediaOpened(node.title)}
-            href={node.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              flex: 1,
-              padding: "8px",
-              background: "#2a2a2a",
-              border: "1px solid #555",
-              borderRadius: "8px",
-              color: "#eee",
-              textDecoration: "none",
-              textAlign: "center",
-              fontSize: "13px",
-            }}
-          >
-            Open in Wikipedia
-          </a>
           <button
             onClick={onClose}
             style={{
-              padding: "8px 16px",
-              background: "transparent",
-              border: "1px solid #555",
+              flex: 1,
+              padding: "10px",
+              background: "#eee",
+              border: "none",
               borderRadius: "8px",
-              color: "#aaa",
+              color: "#111",
               fontSize: "13px",
+              fontWeight: 600,
+              cursor: "pointer",
             }}
           >
             Close
           </button>
+          <a
+            href={node.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => Analytics.wikipediaOpened(node.title)}
+            style={{
+              padding: "10px 14px",
+              background: "transparent",
+              border: "1px solid #555",
+              borderRadius: "8px",
+              color: "#aaa",
+              textDecoration: "none",
+              textAlign: "center",
+              fontSize: "13px",
+              cursor: "pointer",
+            }}
+          >
+            Wikipedia
+          </a>
         </div>
       </div>
     </div>
