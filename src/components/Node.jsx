@@ -130,27 +130,33 @@ export default function Node({ node, style, zoom = 1 }) {
         onTouchEnd={onTouchEnd}
         style={{
           ...style,
-          padding: "8px 12px",
+          padding: "5px 10px",
           background: node.expanded
-            ? "#1a2e1a"
+            ? "#f0fff0"
             : node.visited
-            ? "#1a2a3a"
-            : "#222",
+            ? "#eaf3fb"
+            : "#ffffff",
           border: node.expanded
-            ? "1px solid #4a8a4a"
-            : node.visited
-            ? "1px solid #4a8ab5"
-            : "1px solid #444",
-          borderRadius: "8px",
+            ? "1px solid #72aa72"
+            : "1px solid #a2a9b1",
+          borderRadius: "0px",
           cursor: isExpanding ? "wait" : "pointer",
           userSelect: "none",
-          maxWidth: "140px",
+          maxWidth: "160px",
           textAlign: "center",
           fontSize: "12px",
-          lineHeight: "1.3",
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          lineHeight: "1.4",
+          color: node.expanded
+            ? "#006400"
+            : node.visited
+            ? "#0b0080"
+            : "#0645ad",
+          textDecoration: node.expanded || node.visited ? "none" : "underline",
           opacity: isExpanding ? 0.6 : 1,
-          transition: "opacity 0.2s, background 0.2s, border 0.2s",
+          transition: "opacity 0.2s, background 0.2s",
           position: "absolute",
+          boxShadow: "none",
         }}
       >
         {isExpanding ? "..." : node.title}

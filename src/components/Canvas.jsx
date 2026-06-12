@@ -102,7 +102,7 @@ export default function Canvas() {
   return (
     <div
       ref={canvasRef}
-      style={{ width: "100vw", height: "100vh", overflow: "hidden", position: "relative", cursor: "grab" }}
+      style={{ width: "100vw", height: "100vh", overflow: "hidden", position: "relative", cursor: "grab", background: "#f8f9fa" }}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
@@ -145,12 +145,12 @@ export default function Canvas() {
       })}
 
       {/* botones de zoom */}
-      <div style={{ position: "fixed", bottom: "16px", right: "16px", display: "flex", flexDirection: "column", gap: "8px", zIndex: 150 }}>
+      <div style={{ position: "fixed", bottom: "16px", right: "16px", display: "flex", flexDirection: "column", gap: "4px", zIndex: 150 }}>
         <button onClick={() => setZoom((z) => clampZoom(z + ZOOM_STEP))} disabled={zoom >= MAX_ZOOM}
-          style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#222", border: "1px solid #444", color: "#eee", fontSize: "18px", cursor: zoom >= MAX_ZOOM ? "not-allowed" : "pointer", opacity: zoom >= MAX_ZOOM ? 0.4 : 1 }}
+          style={{ width: "28px", height: "24px", background: "#fff", border: "1px solid #a2a9b1", color: "#54595d", fontSize: "16px", fontFamily: "Georgia, serif", cursor: zoom >= MAX_ZOOM ? "not-allowed" : "pointer", opacity: zoom >= MAX_ZOOM ? 0.4 : 1, lineHeight: 1 }}
         >+</button>
         <button onClick={() => setZoom((z) => clampZoom(z - ZOOM_STEP))} disabled={zoom <= MIN_ZOOM}
-          style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#222", border: "1px solid #444", color: "#eee", fontSize: "18px", cursor: zoom <= MIN_ZOOM ? "not-allowed" : "pointer", opacity: zoom <= MIN_ZOOM ? 0.4 : 1 }}
+          style={{ width: "28px", height: "24px", background: "#fff", border: "1px solid #a2a9b1", color: "#54595d", fontSize: "16px", fontFamily: "Georgia, serif", cursor: zoom <= MIN_ZOOM ? "not-allowed" : "pointer", opacity: zoom <= MIN_ZOOM ? 0.4 : 1, lineHeight: 1 }}
         >−</button>
       </div>
     </div>
