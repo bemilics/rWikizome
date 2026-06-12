@@ -68,7 +68,7 @@ export default function PopupCard({ node, onClose }) {
                 style={{ ...wp, fontSize: "11px", color: "#0645ad", textDecoration: "underline", cursor: "pointer" }}
               >Share path</span>
             )}
-            
+				<a
               href={node.url}
               target="_blank"
               rel="noopener noreferrer"

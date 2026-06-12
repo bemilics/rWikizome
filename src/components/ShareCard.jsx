@@ -15,6 +15,7 @@ function PathCard({ path, cardRef }) {
         <span style={{ ...wp, fontSize: "11px", color: "#54595d" }}>Rhizopedia — Knowledge Trail</span>
       </div>
       <div style={{ padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", letterSpacing: "0.08em", textTransform: "uppercase" }}>Started exploring...</p>
         <p style={{ ...wp, fontSize: "20px", fontWeight: "bold", color: "#202122", textAlign: "center", lineHeight: 1.2 }}>{origin.title}</p>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", margin: "6px 0" }}>
           {middle.map((node, i) => (
@@ -25,8 +26,9 @@ function PathCard({ path, cardRef }) {
           ))}
           <p style={{ ...wp, fontSize: "11px", color: "#a2a9b1", marginTop: "2px" }}>↓</p>
         </div>
+        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", letterSpacing: "0.08em", textTransform: "uppercase" }}>...and ended up at</p>
         <p style={{ ...wp, fontSize: "20px", fontWeight: "bold", color: "#0645ad", textAlign: "center", lineHeight: 1.2 }}>{destination.title}</p>
-        <p style={{ ...wp, fontSize: "11px", color: "#54595d", marginTop: "8px" }}>{path.length - 1} {path.length - 1 === 1 ? "step" : "steps"} apart</p>
+        <p style={{ ...wp, fontSize: "11px", color: "#54595d", marginTop: "8px" }}>{path.length - 1} {path.length - 1 === 1 ? "step" : "steps" } down the rabbit hole</p>
       </div>
       <div style={{ borderTop: border, padding: "5px 12px", background: "#f8f9fa" }}>
         <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", textAlign: "center", letterSpacing: "0.05em" }}>rhizopedia.vercel.app</p>
