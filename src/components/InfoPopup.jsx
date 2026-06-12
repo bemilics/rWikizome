@@ -46,15 +46,19 @@ export default function InfoPopup({ onClose }) {
         }}>
           <li style={{ fontSize: "13px", lineHeight: "1.5" }}>
             <span style={{ marginRight: "8px" }}>👆</span>
-            <strong>Tap</strong> a node to expand it and discover 3 related concepts.
+            <strong>Tap</strong> a node to read its Wikipedia introduction.
           </li>
           <li style={{ fontSize: "13px", lineHeight: "1.5" }}>
             <span style={{ marginRight: "8px" }}>✋</span>
-            <strong>Hold</strong> a node to read its Wikipedia introduction.
+            <strong>Hold</strong> a node to expand it and discover 3 related concepts.
           </li>
           <li style={{ fontSize: "13px", lineHeight: "1.5" }}>
             <span style={{ marginRight: "8px" }}>🖐</span>
             <strong>Drag</strong> the background to pan around the canvas.
+          </li>
+          <li style={{ fontSize: "13px", lineHeight: "1.5" }}>
+            <span style={{ marginRight: "8px" }}>🔍</span>
+            <strong>Scroll</strong> or use the buttons to zoom in and out.
           </li>
         </ul>
         <button
