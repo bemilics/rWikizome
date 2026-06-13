@@ -9,26 +9,51 @@ function PathCard({ path, cardRef }) {
   const origin = path[0]
   const destination = path[path.length - 1]
   const middle = path.slice(1, -1)
+
+  // truncar si hay demasiados conceptos intermedios
+  const MAX_CHARS = 120
+  let prose = middle.map(n => n.title).join(' · ')
+  if (prose.length > MAX_CHARS) {
+    prose = prose.slice(0, MAX_CHARS).replace(/·[^·]*$/, '· ...')
+  }
+
   return (
-    <div ref={cardRef} style={{ background: "#fff", width: "320px", border, padding: "0" }}>
+    <div ref={cardRef} style={{ background: "#fff", width: "300px", border, padding: "0" }}>
       <div style={{ background: "#f8f9fa", borderBottom: border, padding: "6px 12px" }}>
         <span style={{ ...wp, fontSize: "11px", color: "#54595d" }}>Rhizopedia — Knowledge Trail</span>
       </div>
-      <div style={{ padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", letterSpacing: "0.08em", textTransform: "uppercase" }}>Started exploring...</p>
-        <p style={{ ...wp, fontSize: "20px", fontWeight: "bold", color: "#202122", textAlign: "center", lineHeight: 1.2 }}>{origin.title}</p>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", margin: "6px 0" }}>
-          {middle.map((node, i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px" }}>
-              <p style={{ ...wp, fontSize: "11px", color: "#a2a9b1" }}>↓</p>
-              <p style={{ ...wp, fontSize: "11px", color: "#54595d" }}>{node.title}</p>
-            </div>
-          ))}
-          <p style={{ ...wp, fontSize: "11px", color: "#a2a9b1", marginTop: "2px" }}>↓</p>
-        </div>
-        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", letterSpacing: "0.08em", textTransform: "uppercase" }}>...and ended up at</p>
-        <p style={{ ...wp, fontSize: "20px", fontWeight: "bold", color: "#0645ad", textAlign: "center", lineHeight: 1.2 }}>{destination.title}</p>
-        <p style={{ ...wp, fontSize: "11px", color: "#54595d", marginTop: "8px" }}>{path.length - 1} {path.length - 1 === 1 ? "step" : "steps" } down the rabbit hole</p>
+      <div style={{ padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", letterSpacing: "0.08em" }}>STARTED EXPLORING...</p>
+
+        <p style={{ ...wp, fontSize: "22px", fontWeight: "bold", color: "#202122", textAlign: "center", lineHeight: 1.2 }}>
+          {origin.title}
+        </p>
+
+        {middle.length > 0 && (
+          <p style={{
+            ...wp,
+            fontSize: "11px",
+            color: "#a2a9b1",
+            textAlign: "center",
+            lineHeight: 1.8,
+            padding: "4px 8px",
+            borderTop: "1px solid #eaecf0",
+            borderBottom: "1px solid #eaecf0",
+            width: "100%",
+          }}>
+            {prose}
+          </p>
+        )}
+
+        <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", letterSpacing: "0.08em" }}>...AND ENDED UP AT</p>
+
+        <p style={{ ...wp, fontSize: "22px", fontWeight: "bold", color: "#0645ad", textAlign: "center", lineHeight: 1.2 }}>
+          {destination.title}
+        </p>
+
+        <p style={{ ...wp, fontSize: "11px", color: "#54595d" }}>
+          {path.length - 1} {path.length - 1 === 1 ? "step" : "steps"} down the rabbit hole
+        </p>
       </div>
       <div style={{ borderTop: border, padding: "5px 12px", background: "#f8f9fa" }}>
         <p style={{ ...wp, fontSize: "10px", color: "#a2a9b1", textAlign: "center", letterSpacing: "0.05em" }}>rhizopedia.vercel.app</p>
