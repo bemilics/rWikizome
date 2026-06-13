@@ -10,12 +10,17 @@ function PathCard({ path, cardRef }) {
   const destination = path[path.length - 1]
   const middle = path.slice(1, -1)
 
-  // truncar si hay demasiados conceptos intermedios
-  const MAX_CHARS = 120
-  let prose = middle.map(n => n.title).join(' · ')
-  if (prose.length > MAX_CHARS) {
-    prose = prose.slice(0, MAX_CHARS).replace(/·[^·]*$/, '· ...')
+  // distribuir conceptos con ... intercalados si hay muchos
+  const buildProse = (nodes) => {
+    if (nodes.length === 0) return ''
+    if (nodes.length <= 6) return nodes.map(n => n.title).join(' → ')
+    // tomar primeros 2, ... del medio, últimos 2
+    const first = nodes.slice(0, 2).map(n => n.title)
+    const last = nodes.slice(-2).map(n => n.title)
+    const midCount = nodes.length - 4
+    return [...first, `... (${midCount} more) ...`, ...last].join(' → ')
   }
+  const prose = buildProse(middle)
 
   return (
     <div ref={cardRef} style={{ background: "#fff", width: "300px", border, padding: "0" }}>
@@ -32,14 +37,16 @@ function PathCard({ path, cardRef }) {
         {middle.length > 0 && (
           <p style={{
             ...wp,
-            fontSize: "11px",
+            fontSize: "13px",
+            fontWeight: "bold",
             color: "#a2a9b1",
             textAlign: "center",
-            lineHeight: 1.8,
-            padding: "4px 8px",
+            lineHeight: 2,
+            padding: "8px 8px",
             borderTop: "1px solid #eaecf0",
             borderBottom: "1px solid #eaecf0",
             width: "100%",
+            wordBreak: "break-word",
           }}>
             {prose}
           </p>
