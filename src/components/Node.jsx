@@ -86,22 +86,25 @@ export default function Node({ node, style, zoom = 1 }) {
     lastPointer.current = { x: clientX, y: clientY }
   }
 
-  const onPressEnd = async () => {
+  const onPressEnd = () => {
     if (!isPressed.current) return
     clearTimeout(holdTimer.current)
     stopProgressAnimation()
 
-    if (!isDragging.current && !didHold.current) {
-      Analytics.nodeHold(node.title)
-      await loadSummary(node.id)
-      setShowPopup(true)
-    }
+    const wasTap = !isDragging.current && !didHold.current
 
+    // reset inmediato — no esperamos el await
     isPressed.current = false
     isDragging.current = false
     didHold.current = false
     lastPointer.current = null
     totalDelta.current = 0
+
+    // tap: cargar summary de forma independiente
+    if (wasTap) {
+      Analytics.nodeHold(node.title)
+      loadSummary(node.id).then(() => setShowPopup(true))
+    }
   }
 
   const onMouseDown = (e) => { e.stopPropagation(); onPressStart(e.clientX, e.clientY) }
