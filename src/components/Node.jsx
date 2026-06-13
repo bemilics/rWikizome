@@ -130,7 +130,7 @@ export default function Node({ node, style, zoom = 1 }) {
         onTouchEnd={onTouchEnd}
         style={{
           ...style,
-          padding: "5px 10px",
+          padding: zoom > 0.35 ? "5px 10px" : "3px 6px",
           background: node.expanded
             ? "#f0fff0"
             : node.visited
@@ -142,7 +142,9 @@ export default function Node({ node, style, zoom = 1 }) {
           borderRadius: "0px",
           cursor: isExpanding ? "wait" : "pointer",
           userSelect: "none",
-          maxWidth: "160px",
+          maxWidth: zoom > 0.35 ? "160px" : "40px",
+          minWidth: zoom > 0.15 ? "auto" : "8px",
+          minHeight: zoom > 0.15 ? "auto" : "8px",
           textAlign: "center",
           fontSize: "12px",
           fontFamily: "Georgia, 'Times New Roman', serif",
@@ -154,12 +156,17 @@ export default function Node({ node, style, zoom = 1 }) {
             : "#0645ad",
           textDecoration: node.expanded || node.visited ? "none" : "underline",
           opacity: isExpanding ? 0.6 : 1,
-          transition: "opacity 0.2s, background 0.2s",
+          transition: "opacity 0.2s, background 0.2s, max-width 0.1s",
           position: "absolute",
           boxShadow: "none",
+          overflow: "hidden",
+          whiteSpace: zoom > 0.35 ? "normal" : "nowrap",
         }}
       >
-        {isExpanding ? "..." : node.title}
+        {zoom > 0.35
+          ? (isExpanding ? "..." : node.title)
+          : null
+        }
 
         {/* progress ring — solo visible mientras se hace hold */}
         {holdProgress > 0 && (

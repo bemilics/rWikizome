@@ -3,9 +3,9 @@ import { useGraph } from "../hooks/useGraph"
 import Node from "./Node"
 import Edge from "./Edge"
 
-const MIN_ZOOM = 0.3
+const MIN_ZOOM = 0.05
 const MAX_ZOOM = 1.0
-const ZOOM_STEP = 0.15
+const ZOOM_STEP = 0.1
 
 export default function Canvas() {
   const { nodes, edges, init, setResetViewCallback, loadFromStorage } = useGraph()
