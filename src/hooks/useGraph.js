@@ -5,6 +5,12 @@ export const useGraph = create((set, get) => ({
   nodes: [],
   onResetView: null,
   setResetViewCallback: (fn) => set({ onResetView: fn }),
+  onFitView: null,
+  setFitViewCallback: (fn) => set({ onFitView: fn }),
+  fitView: () => {
+    const { onFitView } = get()
+    if (onFitView) onFitView()
+  },
   edges: [],
   loading: false,
   expandingId: null, // qué nodo está cargando hijos ahora mismo

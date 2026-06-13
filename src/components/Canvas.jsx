@@ -9,7 +9,7 @@ const MAX_ZOOM = 1.0
 const ZOOM_STEP = 0.1
 
 export default function Canvas() {
-  const { nodes, edges, init, setResetViewCallback, loadFromStorage } = useGraph()
+  const { nodes, edges, init, setResetViewCallback, setFitViewCallback, loadFromStorage } = useGraph()
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const isPanning = useRef(false)
@@ -23,8 +23,29 @@ export default function Canvas() {
     setZoom(1)
   }
 
+  const fitViewRef = useRef(null)
+  fitViewRef.current = () => {
+    if (nodes.length === 0) return
+    const xs = nodes.map(n => n.position.x)
+    const ys = nodes.map(n => n.position.y)
+    const minX = Math.min(...xs)
+    const maxX = Math.max(...xs)
+    const minY = Math.min(...ys)
+    const maxY = Math.max(...ys)
+    const graphW = maxX - minX + 200
+    const graphH = maxY - minY + 200
+    const scaleX = window.innerWidth / graphW
+    const scaleY = window.innerHeight / graphH
+    const newZoom = Math.min(scaleX, scaleY, 1) * 0.85
+    const cx = (minX + maxX) / 2
+    const cy = (minY + maxY) / 2
+    setPan({ x: -cx, y: -cy })
+    setZoom(newZoom)
+  }
+
   useEffect(() => {
     setResetViewCallback(() => resetViewRef.current())
+    setFitViewCallback(() => fitViewRef.current())
     const restored = loadFromStorage()
     if (!restored) init()
   }, [])
@@ -113,6 +134,7 @@ export default function Canvas() {
   return (
     <div
       ref={canvasRef}
+      data-canvas
       style={{ width: "100vw", height: "100vh", overflow: "hidden", position: "relative", cursor: "grab", background: "#f8f9fa" }}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
