@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react"
 import { useGraph } from "../hooks/useGraph"
 import Node from "./Node"
 import Edge from "./Edge"
+import HintBadge from "./HintBadge"
 
 const MIN_ZOOM = 0.05
 const MAX_ZOOM = 1.0
@@ -136,6 +137,13 @@ export default function Canvas() {
       </svg>
 
       {/* nodos — posición calculada en coordenadas de pantalla, sin scale */}
+      {nodes.length > 0 && (() => {
+        const root = nodes[0]
+        const rx = cx + (root.position.x + pan.x) * zoom
+        const ry = cy + (root.position.y + pan.y) * zoom
+        return <HintBadge node={root} screenX={rx} screenY={ry} zoom={zoom} />
+      })()}
+
       {nodes.map((node) => {
         const x = cx + (node.position.x + pan.x) * zoom
         const y = cy + (node.position.y + pan.y) * zoom
