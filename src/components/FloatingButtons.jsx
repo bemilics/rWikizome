@@ -1,21 +1,37 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { useGraph } from "../hooks/useGraph"
 import { Analytics } from "../utils/analytics"
 import InfoPopup from "./InfoPopup"
 import SearchBar from "./SearchBar"
 import ShareCard from "./ShareCard"
+import MapShareCard from "./MapShareCard"
 
 export default function FloatingButtons() {
   const { init, getSessionStats } = useGraph()
   const [showInfo, setShowInfo] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [showSessionShare, setShowSessionShare] = useState(false)
+  const [showMapShare, setShowMapShare] = useState(false)
+  const [showShareMenu, setShowShareMenu] = useState(false)
+  const shareMenuRef = useRef(null)
 
   useEffect(() => {
     const visited = localStorage.getItem("rhizopedia_visited")
-    if (!visited) {
-      setShowInfo(true)
+    if (!visited) setShowInfo(true)
+  }, [])
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (shareMenuRef.current && !shareMenuRef.current.contains(e.target)) {
+        setShowShareMenu(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClick)
+    document.addEventListener("touchstart", handleClick)
+    return () => {
+      document.removeEventListener("mousedown", handleClick)
+      document.removeEventListener("touchstart", handleClick)
     }
   }, [])
 
@@ -36,6 +52,23 @@ export default function FloatingButtons() {
     textDecoration: "underline",
     cursor: "pointer",
     borderRadius: "3px 3px 0 0",
+    whiteSpace: "nowrap",
+  }
+
+  const menuItemStyle = {
+    display: "block",
+    width: "100%",
+    padding: "5px 12px",
+    background: "#fff",
+    border: "none",
+    borderBottom: "1px solid #eaecf0",
+    color: "#0645ad",
+    fontSize: "11px",
+    fontFamily: "Georgia, serif",
+    textDecoration: "underline",
+    cursor: "pointer",
+    textAlign: "left",
+    whiteSpace: "nowrap",
   }
 
   return (
@@ -50,7 +83,35 @@ export default function FloatingButtons() {
         alignItems: "flex-end",
       }}>
         <button style={btnStyle} onClick={() => { Analytics.graphRandom(); init() }}>Random</button>
-        <button style={btnStyle} onClick={() => setShowSessionShare(true)}>Share session</button>
+
+        <div ref={shareMenuRef} style={{ position: "relative" }}>
+          <button
+            style={btnStyle}
+            onClick={() => setShowShareMenu(v => !v)}
+          >
+            Share {showShareMenu ? "▴" : "▾"}
+          </button>
+          {showShareMenu && (
+            <div style={{
+              position: "absolute",
+              top: "100%",
+              right: 0,
+              background: "#fff",
+              border: "1px solid #a2a9b1",
+              zIndex: 160,
+              minWidth: "140px",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            }}>
+              <button style={menuItemStyle} onClick={() => { setShowShareMenu(false); setShowSessionShare(true) }}>
+                Share session
+              </button>
+              <button style={{ ...menuItemStyle, borderBottom: "none" }} onClick={() => { setShowShareMenu(false); setShowMapShare(true) }}>
+                Share map
+              </button>
+            </div>
+          )}
+        </div>
+
         <button style={btnStyle} onClick={() => setShowSearch(true)}>Search</button>
         <button style={btnStyle} onClick={() => setShowInfo(true)}>Help</button>
       </div>
@@ -64,6 +125,10 @@ export default function FloatingButtons() {
         background: "#a2a9b1",
         zIndex: 149,
       }} />
+
+      {showMapShare && (
+        <MapShareCard onClose={() => setShowMapShare(false)} />
+      )}
 
       {showSessionShare && (
         <ShareCard
